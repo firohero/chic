@@ -4,7 +4,7 @@ default: &default_settings
   # If you are running on localhost, you can write here "lvh.me:3000" (which redirects to localhost port 3000)
   # The community subdomains will be added to this top domain.
   # NOTE: Do not include http(s) here, or subdomains, just the top level domain, like "sharetribe.com" for example
-  domain: "lvh.me:3000"
+  domain: "192.169.165.129:3000"
 
   # If you want to make logins work across different subdomains you should put here the domain where you are running Sharetribe.
   # practically in most cases the same value as in "domain:"
@@ -32,10 +32,10 @@ default: &default_settings
   # NOTE: in Heroku you can't store files in local system, so S3 should be used
 
   # Default bucket
-  s3_bucket_name:
+  #s3_bucket_name:
 
   # Bucket for files users upload directly to S3. You can add an expiration policy to these files.
-  s3_upload_bucket_name:
+  #s3_upload_bucket_name:
 
   # Server assets directly from the Rails application, defaults to true
   #
@@ -126,13 +126,20 @@ default: &default_settings
   # If using SMTP, uncomment corresponding lines and enter your information.
   # the SMPT lines below contain example of using Gmail, but you can use any SMTP
   # For the domain part you can enter HELO domain, if needed. Google for more info. :)
-  mail_delivery_method: sendmail
+  mail_delivery_method: smtp
 
-  # smtp_email_address: "smtp.gmail.com"
-  # smtp_email_port: 587
-  # smtp_email_user_name: "<YOUR_GMAIL_USERNAME>@gmail.com"
-  # smtp_email_password: "<YOUR_GMAIL_PASSWORD>"
-  # smtp_email_domain: "localhost"
+  smtp_email_address: "mail.servicesonthego.com"
+  smtp_email_port: 587
+  smtp_email_user_name: "info@servicesonthego.com"
+  smtp_email_password: "firasaltaf"
+  smtp_email_domain: "servicesonthego.com"
+
+  #smtp_email_address: "smtp.gmail.com"
+  #smtp_email_port: 587
+  #smtp_email_user_name: "<YOUR_GMAIL_USERNAME>@gmail.com"
+  #smtp_email_password: "<YOUR_GMAIL_PASSWORD>"
+  #smtp_email_domain: "localhost"
+
 
   # This will be the from field in the mails sent from Sharetribe
   sharetribe_mail_from_address: "your-team@example.com"
