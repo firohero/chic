@@ -54,6 +54,7 @@ class CommunityMailer < ActionMailer::Base
                                   :count => time_difference_in_days(@recipient.last_community_updates_at))
       @url_params = {}
       @url_params[:host] = @community.full_domain.to_s
+      #@url_params[:host] = "www.chicwithaclick.com"
       @url_params[:locale] = @recipient.locale
       @url_params[:ref] = "weeklymail"
       @url_params.freeze # to avoid accidental modifications later

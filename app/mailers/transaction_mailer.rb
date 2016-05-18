@@ -271,6 +271,7 @@ class TransactionMailer < ActionMailer::Base
   def build_url_params(community, recipient, ref="email")
     {
       host: community.full_domain,
+      #host: "www.chicwithaclick.com"
       ref: ref,
       locale: recipient.locale
     }
