@@ -195,3 +195,95 @@ $message-time-margin: lines(0.25);
 .message-price-vat {
   @include small-type
 }
+
+/* Firos' custome style */
+
+.btn-accept {
+    -webkit-border-radius: 0.3125em;
+    -moz-border-radius: 0.3125em;
+    -ms-border-radius: 0.3125em;
+    -o-border-radius: 0.3125em;
+    border-radius: 0.3125em;
+    background: #18A606;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    margin: 1em 1em;
+    padding: 0 1.5em;
+    padding-bottom: 4px;
+    height: 2.625em;
+    border: 0;
+    display: table;
+    line-height: 1.5em;
+    display: block;
+    margin-top: 0.625em;
+    margin-bottom: 0.625em;
+    height: 2.5em;
+    padding-left: 1.25em;
+    padding-right: 1.25em;
+    line-height: 2.3125em;
+    &:hover {
+      background: #387807;
+    }
+}
+
+.btn-propose {
+    -webkit-border-radius: 0.3125em;
+    -moz-border-radius: 0.3125em;
+    -ms-border-radius: 0.3125em;
+    -o-border-radius: 0.3125em;
+    border-radius: 0.3125em;
+    background: #FACD18;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    margin: 1em 1em;
+    padding: 0 1.5em;
+    padding-bottom: 4px;
+    height: 2.625em;
+    border: 0;
+    display: table;
+    line-height: 1.5em;
+    display: block;
+    margin-top: 0.625em;
+    margin-bottom: 0.625em;
+    height: 2.5em;
+    padding-left: 1.25em;
+    padding-right: 1.25em;
+    line-height: 2.3125em;
+    &:hover {
+      background: #A9960C;
+    }
+}
+
+.btn-deny {
+    -webkit-border-radius: 0.3125em;
+    -moz-border-radius: 0.3125em;
+    -ms-border-radius: 0.3125em;
+    -o-border-radius: 0.3125em;
+    border-radius: 0.3125em;
+    background: #F10F22;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    margin: 1em 1em;
+    padding: 0 1.5em;
+    padding-bottom: 4px;
+    height: 2.625em;
+    border: 0;
+    display: table;
+    line-height: 1.5em;
+    display: block;
+    margin-top: 0.625em;
+    margin-bottom: 0.625em;
+    height: 2.5em;
+    padding-left: 1.25em;
+    padding-right: 1.25em;
+    line-height: 2.3125em;
+}
+
+.inner
+{
+  display: inline-block;
+}
+

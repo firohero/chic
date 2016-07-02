@@ -41,6 +41,10 @@
 #  is_organization                    :boolean
 #  organization_name                  :string(255)
 #  deleted                            :boolean          default(FALSE)
+#  stripe_publishable_key             :string(255)
+#  stripe_provider                    :string(255)
+#  stripe_uid                         :string(255)
+#  stripe_access_code                 :string(255)
 #
 # Indexes
 #

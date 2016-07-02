@@ -16,6 +16,27 @@ class MessagesController < ApplicationController
       return redirect_to root
     end
 
+    if params[:commit] == t("conversations.show.accept")
+      #transaction_model = Conversation.where(id: params[:message][:conversation_id]).transaction
+      transaction_model = Transaction.find_by(conversation_id: params[:message][:conversation_id])
+      transaction_model.appointment_status = "accepted"
+      transaction_model.save
+      ch = Stripe::Charge.retrieve(transaction_model.stripe_charge)
+      ch.capture
+    elsif params[:commit] == t("conversations.show.deny")
+      transaction_model = Transaction.find_by(conversation_id: params[:message][:conversation_id])
+      transaction_model.appointment_status = "denied"
+      transaction_model.save
+    end
+
+      # temp test
+#      transaction_model = Transaction.find_by(conversation_id: params[:message][:conversation_id])
+#      transaction_model.appointment_status = "accepted"
+#      transaction_model.save
+#      ch = Stripe::Charge.retrieve(transaction_model.stripe_charge)
+#      ch.capture
+
+
     message_params = params.require(:message).permit(
       :conversation_id,
       :content
@@ -26,8 +47,18 @@ class MessagesController < ApplicationController
     @message = Message.new(message_params)
     if @message.save
       Delayed::Job.enqueue(MessageSentJob.new(@message.id, @current_community.id))
+    elsif params[:commit] == t("conversations.show.accept") 
+      message_params[:content] = "Appointment Accepted"
+      @message = Message.new(message_params)
+      @message.save
+      flash[:error] = "Appointment Accepted"
+    elsif params[:commit] != t("conversations.show.deny")
+      message_params[:content] = "Appointment Denied"
+      @message = Message.new(message_params)
+      @message.save
+      flash[:error] = "Appointment request denied"
     else
-      flash[:error] = "reply_cannot_be_empty"
+      flash[:error] = "Proposed time or reply cannot be empty"
     end
 
     # TODO This is somewhat copy-paste

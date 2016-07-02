@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160229114242) do
+ActiveRecord::Schema.define(version: 20160627013400) do
 
   create_table "auth_tokens", force: :cascade do |t|
     t.string   "token",            limit: 255
@@ -891,6 +891,10 @@ ActiveRecord::Schema.define(version: 20160229114242) do
     t.boolean  "is_organization"
     t.string   "organization_name",                  limit: 255
     t.boolean  "deleted",                                          default: false
+    t.string   "stripe_publishable_key",             limit: 255
+    t.string   "stripe_provider",                    limit: 255
+    t.string   "stripe_uid",                         limit: 255
+    t.string   "stripe_access_code",                 limit: 255
   end
 
   add_index "people", ["authentication_token"], name: "index_people_on_authentication_token", using: :btree
@@ -997,6 +1001,8 @@ ActiveRecord::Schema.define(version: 20160229114242) do
     t.string   "delivery_method",                   limit: 31,  default: "none"
     t.integer  "shipping_price_cents",              limit: 4
     t.boolean  "deleted",                                       default: false
+    t.string   "appointment_status",                limit: 255
+    t.string   "stripe_charge",                     limit: 255
   end
 
   add_index "transactions", ["community_id", "deleted"], name: "transactions_on_cid_and_deleted", using: :btree

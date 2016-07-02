@@ -19,6 +19,10 @@
         - text_with_line_breaks do
           = @person.description
       - elsif current_user?(@person)
+        = link_to image_tag('blue-on-light.png'), person_omniauth_authorize_path(:stripe_connect)
+        %br
+        %br
+        %br
         %a{href: person_settings_path(@person)}
           .icon-with-text-container
             .ss-chat.icon-part

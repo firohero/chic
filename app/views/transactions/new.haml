@@ -1,6 +1,9 @@
 - content_for :extra_javascript do
   :javascript
-    ST.transaction.initializeFreeTransactionForm('#{I18n.locale}');
+    ST.transaction.initializeFreeTransactionForm("#{I18n.locale}");
+  %script{type: "text/javascript", src: "https://js.stripe.com/v2/"}
+  :javascript
+    Stripe.setPublishableKey("#{@stripe_public}");
 
 - content_for :title_header do
   %h1
@@ -19,10 +22,19 @@
       %li
         %div
           = t("listing_conversations.preauthorize.by", listing: link_to("#{listing[:title]}", listing_path(listing[:id])), author: author_link).html_safe
-
+      - total = 0
       - m_price_break_down.each do |price_break_down|
+        - total = total + price_break_down[:total].to_i*100
         %li
           = render partial: "transactions/price_break_down", locals: price_break_down
+  -#= form_tag(form_action) do
+    = javascript_include_tag "https://checkout.stripe.com/v2/checkout.js",
+      :class => "stripe-button", 
+      :"data-key" => "#{Rails.configuration.stripe[:publishable_key]}", 
+      :"data-description" => "30-day free trial", 
+      :"data-amount" => "500", 
+      :"data-image" => 'blue-on-light.png'
+    -#%script{src: "https://checkout.stripe.com/checkout.js", "data-image" => 'blue-on-light.png',class: "send_button", "data-key" => "#{Rails.configuration.stripe[:publishable_key]}", "data-description" => "Pre-authorize payment", "data-amount" => "500", "data-locale" => "auto"} = "test"
 
   = form_tag(form_action, method: :post, id: "transaction-form") do
 
@@ -32,7 +44,11 @@
 
     .preauthorize-section
       %h2
-        = t("conversations.new.send_message_to_user", person: author_link).html_safe
+        = "Write down your preferred appointment time-frames for"
+        = author_link
+        %br
+        %strong (required field)
+        -#= t("conversations.new.send_message_to_user", person: author_link).html_safe
       .row
         .col-12
           = text_area_tag(:message, nil, :class => "text_area")
@@ -40,6 +56,20 @@
       - if quantity
         = hidden_field_tag(:quantity, quantity)
 
+      -#%script{src: "https://checkout.stripe.com/checkout.js", class: "stripe-button", "data-key" => "#{Rails.configuration.stripe[:publishable_key]}", "data-description" => "Pre-authorize payment", "data-amount" => "500", "data-locale" => "auto"}
       .row
+        .col-12
+        = javascript_include_tag "https://checkout.stripe.com/v2/checkout.js",
+          :class => "stripe-button",
+          :"data-key" => "#{Rails.configuration.stripe[:publishable_key]}",
+          :"data-description" => "charged upon appointment confirmation",
+          :"data-amount" => total.to_s,
+          :"data-image" => 'https://s3-us-west-2.amazonaws.com/chic-sharetribe/images/communities/logos/1/original/Logo_mob5.png',
+          :"data-label" => "Request Appointment",
+          :"data-panel-label" => "Pre-Authorize",
+          :"data-name" => "Pre-Authorize Payment"
+      %strong.text-danger
+        = "You will only be charged after appointment confirmation and no questions asked refund if needed."
+      -#.row
         .col-12
           = button_tag t("conversations.new.send_message"), :class => "send_button"

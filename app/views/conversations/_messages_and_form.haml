@@ -1,13 +1,21 @@
+#messages
+  = render :partial => "conversations/message", :collection => messages, as: :message_or_action
+
 - if role == :participant
-  - content_for :javascript do
+  -# content_for :javascript do
     initialize_reply_form('#{I18n.locale}');
 
   #reply_form.message-avatar-padding.message-reply-form
     = form_for message_form, :url => message_form_action do |f|
-      = f.label :content, t("conversations.show.write_a_reply")
+      - if transaction_model.appointment_status == nil && @current_user.id != transaction_model.starter_id && transaction_model.stripe_charge != nil
+        = f.button t("conversations.show.accept"), :name=>"commit", :value=>"Accept", :class => "inner btn-accept"
+      - if transaction_model.stripe_charge != nil
+        = f.button t("conversations.show.propose_new_time"), :class => "inner btn-propose"
+      - if transaction_model.appointment_status == nil && @current_user.id != transaction_model.starter_id && transaction_model.stripe_charge != nil
+        = f.button t("conversations.show.deny"), :name=>"commit", :value=>"Deny", :class => "inner btn-deny"
+      = f.label :content, t("conversations.show.propose_or_write")
       = f.text_area :content, :class => "reply_form_text_area"
       = f.hidden_field :conversation_id
-      = f.button t("conversations.show.send_reply")
+      - if transaction_model.appointment_status != nil || transaction_model.stripe_charge == nil
+        = f.button t("conversations.show.send_reply")
 
-#messages
-  = render :partial => "conversations/message", :collection => messages, as: :message_or_action

@@ -278,6 +278,11 @@ default: &default_settings
   http_auth_username: sharetribe
   http_auth_password: changeme
 
+  # Stripe keys
+  stripe_secret_key: "sk_live_LgWb2WtQlfhbsZ291FZHegZH"
+  stripe_public_key: "pk_live_u9qrOOOicKo4La28CmaMVj2C"  
+  stripe_client_id: "ca_8VRrhUfMbZqb6nt6G61t5IghhMO0xb1I"
+
 production: &production_settings
   <<: *default_settings
 
@@ -303,6 +308,11 @@ development:
   secret_key_base: "fd1af50b59b5e27776941b3205f92aca0f704c2252225cf93e3d97ae53f4774d25736cbdb19c1580839a2f68e15009209227e966003f53932c1bcc5d65616948"
 
   log_level: DEBUG
+
+  # Stripe keys
+  stripe_secret_key: "sk_test_brcCQW3TR4Q8cYoDIzq3U7NY"
+  stripe_public_key: "pk_test_61JflihrwGmJVRYdcb9pSOPG"
+  stripe_client_id: "ca_8VRrwFO2xV1vk1GFwYxCCpwHn98o1qKZ"
 
 test:
   <<: *default_settings

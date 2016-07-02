@@ -83,6 +83,9 @@ gem 'librato-rails', "~> 0.11.1"
 
 gem 'jwt', '~> 1.5.2'
 
+# Stripe API library
+gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
+
 # Use Oauth2 from current master, because the newest release
 # uses old JWT version
 # (This can be removed when oauth2 version > 1.1.0 is released)
@@ -90,6 +93,9 @@ gem 'oauth2',
   git: 'git://github.com/intridea/oauth2.git',
   branch: 'master',
   ref: 'e0006cb5099bf392f011eb5c49cbec4f893bbdba'
+
+# Need to use OAuth to actually use Stripe Connect. Using the OmniAuth Stripe Connect gem:
+gem 'omniauth-stripe-connect'
 
 gem 'lograge', "~> 0.3.2"
 gem 'public_suffix', "~> 1.5.1" # Needed currently to set GA hostname right, probably not

@@ -162,4 +162,30 @@ class SessionsController < ApplicationController
     end
   end
 
+  # Callback from Omniauth for Stripe Connect
+  def stripe_connect
+    # Delete the code inside of this method and write your own.
+    # The code below is to show you where to access the data.
+    #raise request.env["omniauth.auth"].to_yaml
+
+    # Update the "person" (people tablein db) based on Stripe's response
+    @person = @current_user
+    if @person.update_attributes({
+      stripe_provider: request.env["omniauth.auth"].provider,
+      stripe_uid: request.env["omniauth.auth"].uid,
+      stripe_access_code: request.env["omniauth.auth"].credentials.token,
+      stripe_publishable_key: request.env["omniauth.auth"].info.stripe_publishable_key
+    })
+      # anything else you need to do in response..
+      #sign_in_and_redirect @person, :event => :authentication
+      #set_flash_message(:notice, :success, :kind => "Stripe") if is_navigational_format?
+      flash[:notice] = "Your Stripe account is now connected to Chíc!"
+      redirect_to @person
+    else
+      session["devise.stripe_connect_data"] = request.env["omniauth.auth"]
+      redirect_to sign_up_path
+    end
+
+  end
+
 end

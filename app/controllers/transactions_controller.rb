@@ -19,6 +19,7 @@ class TransactionsController < ApplicationController
   )
 
   def new
+    @stripe_public = APP_CONFIG.stripe_public_key
     Result.all(
       ->() {
         fetch_data(params[:listing_id])
@@ -48,7 +49,8 @@ class TransactionsController < ApplicationController
       end
     }.on_error { |error_msg, data|
       flash[:error] = Maybe(data)[:error_tr_key].map { |tr_key| t(tr_key) }.or_else("Could not start a transaction, error message: #{error_msg}")
-      redirect_to(session[:return_to_content] || root)
+      #redirect_to(session[:return_to_content] || listing_path(params[:listing_id]) || root)
+      redirect_to(:back)
     }
   end
 
@@ -69,7 +71,7 @@ class TransactionsController < ApplicationController
       ->(form, (listing_id, listing_model, author_model, process, gateway), _, _) {
         booking_fields = Maybe(form).slice(:start_on, :end_on).select { |booking| booking.values.all? }.or_else({})
 
-        quantity = Maybe(booking_fields).map { |b| DateUtils.duration_days(b[:start_on], b[:end_on]) }.or_else(form[:quantity])
+        @quantity = Maybe(booking_fields).map { |b| DateUtils.duration_days(b[:start_on], b[:end_on]) }.or_else(form[:quantity])
 
         TransactionService::Transaction.create(
           {
@@ -82,14 +84,33 @@ class TransactionsController < ApplicationController
               unit_type: listing_model.unit_type,
               unit_price: listing_model.price,
               unit_tr_key: listing_model.unit_tr_key,
-              listing_quantity: quantity,
+              listing_quantity: @quantity,
               content: form[:message],
               booking_fields: booking_fields,
               payment_gateway: process[:process] == :none ? :none : gateway, # TODO This is a bit awkward
               payment_process: process[:process]}
           })
       }
-    ).on_success { |(_, (_, _, _, process), _, _, tx)|
+    ).on_success { |(_, (listing_id, listing_model, author_model, process), _, _, tx)|
+
+      @amount = (listing_model.price * @quantity * 100).to_i
+      customer = Stripe::Customer.create(
+        :email => params[:stripeEmail],
+        :source  => params[:stripeToken]
+      )
+
+      charge = Stripe::Charge.create(
+        :customer    => customer.id,
+        :amount      => @amount.to_s,
+        :description => "User #{@current_user.username} bought from listing ID: #{listing_id}",
+        :currency    => 'cad',
+        :capture     => false,
+        :destination => "#{author_model.stripe_uid}"
+      )
+      tx_update = Transaction.find(tx[:transaction][:id])
+      tx_update.stripe_charge = charge.id
+      tx_update.save
+
       after_create_actions!(process: process, transaction: tx[:transaction], community_id: @current_community.id)
       flash[:notice] = after_create_flash(process: process) # add more params here when needed
       redirect_to after_create_redirect(process: process, starter_id: @current_user.id, transaction: tx[:transaction]) # add more params here when needed
@@ -97,6 +118,10 @@ class TransactionsController < ApplicationController
       flash[:error] = Maybe(data)[:error_tr_key].map { |tr_key| t(tr_key) }.or_else("Could not start a transaction, error message: #{error_msg}")
       redirect_to(session[:return_to_content] || root)
     }
+
+  rescue Stripe::CardError => e
+    flash[:error] = e.message
+    redirect_to(session[:return_to_content] || root)
   end
 
   def show
@@ -232,6 +257,9 @@ class TransactionsController < ApplicationController
 
       # TODO: remove references to transaction model
       transaction = Transaction.find(transaction[:id])
+     
+      #transaction.stripe_charge = @charge.id
+      #transaction.save
 
       Delayed::Job.enqueue(MessageSentJob.new(transaction.conversation.messages.last.id, community_id))
     else
@@ -273,7 +301,7 @@ class TransactionsController < ApplicationController
 
   def validate_form(form_params, process)
     if process[:process] == :none && form_params[:message].blank?
-      Result::Error.new("Message cannot be empty")
+      Result::Error.new("Proposed time-frame or message cannot be empty")
     else
       Result::Success.new
     end

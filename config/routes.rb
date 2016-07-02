@@ -28,6 +28,9 @@ Kassi::Application.routes.draw do
   post '/webhooks/paypal_ipn' => 'paypal_ipn#ipn_hook', as: :paypal_ipn_hook
   post '/webhooks/plans' => 'plans#create'
   get '/webhooks/trials' => 'plans#get_trials'
+  post '/webhooks/stripe' => 'stripe_webhooks#receive'
+  get '/webhooks/stripe' => 'stripe_webhooks#report'
+
 
   post '/bounces' => 'amazon_bounces#notification'
 

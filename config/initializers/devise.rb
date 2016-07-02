@@ -200,6 +200,20 @@ Devise.setup do |config|
   # It allows dynamic configuring on community basis
   config.omniauth :facebook, :setup => true
 
+  # Declaring provider for Stripe Connect setup, that will use SessionsController#stripe_connect as callback
+  #config.omniauth :stripe_connect,
+  #  'ca_8VRrwFO2xV1vk1GFwYxCCpwHn98o1qKZ',
+  #  'sk_test_brcCQW3TR4Q8cYoDIzq3U7NY',
+  #  :scope => 'read_write',
+  #  :stripe_landing => 'register'
+
+  config.omniauth :stripe_connect,
+    APP_CONFIG.stripe_client_id,
+    APP_CONFIG.stripe_secret_key,
+    :scope => 'read_write',
+    :stripe_landing => 'register'
+
+
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.
