@@ -1,0 +1,57 @@
+<h2> Stripe Webhook Log (development): </h2> <br/> <br/>
+I, [2016-05-27T22:02:00.170793 #10934]  INFO -- : BILLING: customer.created			Event ID: evt_00000000000000   -   Customer:  <br/> <br/>
+I, [2016-05-27T22:02:14.636622 #10934]  INFO -- : BILLING: customer.bank_account.deleted	Event ID: evt_00000000000000   -   Customer:  <br/> <br/>
+I, [2016-05-27T22:02:22.780315 #10934]  INFO -- : BILLING: customer.source.created		Event ID: evt_00000000000000   -   Customer:  <br/> <br/>
+I, [2016-05-27T22:02:28.511766 #10934]  INFO -- : BILLING: order.created			Event ID: evt_00000000000000   -   Customer:  <br/> <br/>
+I, [2016-05-27T23:01:35.047979 #11297]  INFO -- : BILLING: charge.succeeded			Event ID: evt_00000000000000   -   Customer: cus_00000000000000 <br/> <br/>
+I, [2016-05-27T23:01:50.986954 #11297]  INFO -- : BILLING: customer.created			Event ID: evt_00000000000000   -   Customer:  <br/> <br/>
+I, [2016-05-29T00:48:53.252435 #16783]  INFO -- : BILLING: charge.succeeded			Event ID: evt_00000000000000   -   Customer: cus_00000000000000 <br/> <br/>
+I, [2016-05-29T13:20:09.431441 #20794]  INFO -- : BILLING: customer.source.created			Event ID: evt_18GaR0CE0kcAlyNBkSVI4lmP   -   Customer: cus_8XfmKZV3s6MW5t <br/> <br/>
+I, [2016-05-29T13:20:09.681847 #20794]  INFO -- : BILLING: customer.created			Event ID: evt_18GaR0CE0kcAlyNBYfBnL2Os   -   Customer:  <br/> <br/>
+I, [2016-05-29T13:24:08.531980 #20844]  INFO -- : BILLING: customer.created			Event ID: evt_18GaUzCE0kcAlyNBZG4Hf2vl   -   Customer:  <br/> <br/>
+I, [2016-05-29T13:24:10.426316 #20844]  INFO -- : BILLING: customer.source.created			Event ID: evt_18GaUzCE0kcAlyNBZJYQBa4J   -   Customer: cus_8Xfqa2Z3Iv4OfG <br/> <br/>
+I, [2016-05-29T13:26:28.471738 #20865]  INFO -- : BILLING: customer.source.created			Event ID: evt_18GaXGCE0kcAlyNBgvDUN8tJ   -   Customer: cus_8Xftt3bebVn6BD <br/> <br/>
+I, [2016-05-29T13:26:39.253155 #20865]  INFO -- : BILLING: customer.created			Event ID: evt_18GaXGCE0kcAlyNBaM0eacAG   -   Customer:  <br/> <br/>
+I, [2016-05-29T13:33:11.167060 #20924]  INFO -- : BILLING: customer.created			Event ID: evt_18GadiCE0kcAlyNBdgZkJQ2q   -   Customer:  <br/> <br/>
+I, [2016-05-29T13:33:13.982703 #20924]  INFO -- : BILLING: customer.source.created			Event ID: evt_18GadiCE0kcAlyNB7xfknjiB   -   Customer: cus_8XfzVJdfc0oGQ6 <br/> <br/>
+I, [2016-05-29T13:37:44.983636 #20941]  INFO -- : BILLING: customer.created			Event ID: evt_18Gai7CE0kcAlyNBzBd10M00   -   Customer:  <br/> <br/>
+I, [2016-05-29T13:37:46.379510 #20941]  INFO -- : BILLING: customer.source.created			Event ID: evt_18Gai7CE0kcAlyNBnnIritGz   -   Customer: cus_8Xg4R68HQxh19M <br/> <br/>
+I, [2016-05-29T13:41:22.488266 #20941]  INFO -- : BILLING: charge.succeeded			Event ID: evt_18GalfCE0kcAlyNB5EhgHuZJ   -   Customer: cus_8Xg7rjd4CXzNLh <br/> <br/>
+I, [2016-05-29T13:41:23.254513 #20941]  INFO -- : BILLING: customer.created			Event ID: evt_18GalfCE0kcAlyNBS9lQCgNO   -   Customer:  <br/> <br/>
+I, [2016-05-29T13:41:23.426706 #20941]  INFO -- : BILLING: customer.source.created			Event ID: evt_18GalfCE0kcAlyNB3pMlUC6I   -   Customer: cus_8Xg7rjd4CXzNLh <br/> <br/>
+I, [2016-05-29T13:46:28.968596 #20941]  INFO -- : BILLING: customer.source.created			Event ID: evt_18GaqcCE0kcAlyNBJxOUt0od   -   Customer: cus_8XgDPjwmSTRSog <br/> <br/>
+I, [2016-05-29T13:46:32.211915 #20941]  INFO -- : BILLING: customer.created			Event ID: evt_18GaqcCE0kcAlyNBBbobKSln   -   Customer:  <br/> <br/>
+I, [2016-05-29T13:46:39.909265 #20941]  INFO -- : BILLING: charge.succeeded			Event ID: evt_18GaqdCE0kcAlyNB4RVYZlya   -   Customer: cus_8XgDPjwmSTRSog <br/> <br/>
+I, [2016-05-29T14:15:58.097107 #20941]  INFO -- : BILLING: customer.created			Event ID: evt_18GbJ7CE0kcAlyNBgUzITwH3   -   Customer:  <br/> <br/>
+I, [2016-05-29T14:16:00.064409 #20941]  INFO -- : BILLING: customer.source.created			Event ID: evt_18GbJ7CE0kcAlyNBOgTRqITM   -   Customer: cus_8XggUQb9ckj9LD <br/> <br/>
+I, [2016-05-29T14:16:00.866779 #20941]  INFO -- : BILLING: charge.succeeded			Event ID: evt_18GbJ9CE0kcAlyNBakVAJqTz   -   Customer: cus_8XggUQb9ckj9LD <br/> <br/>
+I, [2016-06-07T08:36:36.521146 #6842]  INFO -- : BILLING: charge.succeeded			Event ID: evt_18J1kuCE0kcAlyNBOXusLAxg   -   Customer: cus_8aC5grzUHhXxx8 <br/> <br/>
+I, [2016-06-07T08:37:19.855419 #6842]  INFO -- : BILLING: customer.created			Event ID: evt_18J1X0CE0kcAlyNBzl2aGwHe   -   Customer:  <br/> <br/>
+I, [2016-06-07T08:37:29.315546 #6842]  INFO -- : BILLING: account.updated			Event ID: evt_18J1RwL6rDZ7lgCea2gcTaVk   -   Customer:  <br/> <br/>
+I, [2016-06-07T08:39:54.697473 #6842]  INFO -- : BILLING: charge.succeeded			Event ID: evt_18J1byCE0kcAlyNBYZAQE05w   -   Customer: cus_8aBu03Vf0nI43P <br/> <br/>
+I, [2016-06-07T08:41:06.781715 #6842]  INFO -- : BILLING: charge.succeeded			Event ID: evt_18J1i6CE0kcAlyNB3sg86w83   -   Customer: cus_8aC5grzUHhXxx8 <br/> <br/>
+I, [2016-06-07T08:42:36.382185 #6842]  INFO -- : BILLING: balance.available			Event ID: evt_18J1i6CE0kcAlyNBYZ2NgycP   -   Customer:  <br/> <br/>
+I, [2016-06-07T08:44:02.015859 #6842]  INFO -- : BILLING: charge.succeeded			Event ID: evt_18J1jlCE0kcAlyNB39nstNrd   -   Customer: cus_8aC5grzUHhXxx8 <br/> <br/>
+I, [2016-06-07T08:44:06.628615 #6842]  INFO -- : BILLING: account.external_account.created			Event ID: evt_18J0usHetwQt1c6USbbric6W   -   Customer:  <br/> <br/>
+I, [2016-06-07T08:45:12.817788 #6842]  INFO -- : BILLING: customer.created			Event ID: evt_18JmRiCE0kcAlyNBBVfoBc5C   -   Customer:  <br/> <br/>
+I, [2016-06-07T08:45:14.410181 #6842]  INFO -- : BILLING: customer.source.created			Event ID: evt_18JmRiCE0kcAlyNBWVhxUJyK   -   Customer: cus_8ayO5E1nfUzmud <br/> <br/>
+I, [2016-06-07T08:45:15.828685 #6842]  INFO -- : BILLING: charge.succeeded			Event ID: evt_18JmRjCE0kcAlyNB3wdEpLPg   -   Customer: cus_8ayO5E1nfUzmud <br/> <br/>
+I, [2016-06-07T08:46:25.255118 #6842]  INFO -- : BILLING: account.external_account.created			Event ID: evt_18J1UoL6rDZ7lgCeOSwo88O2   -   Customer:  <br/> <br/>
+I, [2016-06-07T08:49:33.951481 #6842]  INFO -- : BILLING: charge.succeeded			Event ID: evt_18J1fTCE0kcAlyNBa4tIqMtz   -   Customer: cus_8aBu03Vf0nI43P <br/> <br/>
+I, [2016-06-07T08:49:58.771193 #6842]  INFO -- : BILLING: account.updated			Event ID: evt_18Iuj8HetwQt1c6UIKKbgvrY   -   Customer:  <br/> <br/>
+I, [2016-06-07T08:50:26.510832 #6842]  INFO -- : BILLING: customer.created			Event ID: evt_18J1hcCE0kcAlyNBFQybdBHW   -   Customer:  <br/> <br/>
+I, [2016-06-07T08:53:35.334230 #6842]  INFO -- : BILLING: balance.available			Event ID: evt_18J1kuCE0kcAlyNBsj9fYCbw   -   Customer:  <br/> <br/>
+I, [2016-06-07T08:54:29.560055 #6842]  INFO -- : BILLING: balance.available			Event ID: evt_18JaCwCE0kcAlyNBEDM9NGM5   -   Customer:  <br/> <br/>
+I, [2016-06-07T09:01:40.287553 #6842]  INFO -- : BILLING: charge.succeeded			Event ID: evt_18J1YOCE0kcAlyNBMJxuS4v7   -   Customer: cus_8aBu03Vf0nI43P <br/> <br/>
+I, [2016-06-07T09:01:59.122021 #6842]  INFO -- : BILLING: charge.succeeded			Event ID: evt_18J1aCCE0kcAlyNBDoxzvyGr   -   Customer: cus_8aBu03Vf0nI43P <br/> <br/>
+I, [2016-06-07T09:03:23.307669 #6842]  INFO -- : BILLING: account.external_account.created			Event ID: evt_18IunrHetwQt1c6UqBVA59fv   -   Customer:  <br/> <br/>
+I, [2016-06-07T09:03:28.188303 #6842]  INFO -- : BILLING: customer.source.created			Event ID: evt_18J1X0CE0kcAlyNBM8A84ELU   -   Customer: cus_8aBu03Vf0nI43P <br/> <br/>
+I, [2016-06-07T09:03:38.323195 #6842]  INFO -- : BILLING: account.external_account.created			Event ID: evt_18J12EHetwQt1c6U6H4o7Lfs   -   Customer:  <br/> <br/>
+I, [2016-06-07T09:03:59.409727 #6842]  INFO -- : BILLING: account.external_account.created			Event ID: evt_18Iuj8HetwQt1c6UHSWhgLue   -   Customer:  <br/> <br/>
+I, [2016-06-07T09:10:05.607920 #6842]  INFO -- : BILLING: account.external_account.created			Event ID: evt_18IupUHetwQt1c6U5MmNSJZf   -   Customer:  <br/> <br/>
+I, [2016-06-07T09:16:16.788077 #6842]  INFO -- : BILLING: customer.source.created			Event ID: evt_18J1hcCE0kcAlyNB8bLE1SRD   -   Customer: cus_8aC5grzUHhXxx8 <br/> <br/>
+I, [2016-06-07T09:17:06.952532 #6842]  INFO -- : BILLING: transfer.paid			Event ID: evt_18JLX0CE0kcAlyNBhALPsy3s   -   Customer:  <br/> <br/>
+I, [2016-06-07T09:17:45.000672 #6842]  INFO -- : BILLING: balance.available			Event ID: evt_18J1jlCE0kcAlyNBnXy56ad9   -   Customer:  <br/> <br/>
+I, [2016-06-07T09:23:36.678861 #6842]  INFO -- : BILLING: charge.succeeded			Event ID: evt_18J1cbCE0kcAlyNBcpIU4WNQ   -   Customer: cus_8aBu03Vf0nI43P <br/> <br/>
+I, [2016-06-07T09:24:24.379736 #6842]  INFO -- : BILLING: transfer.created			Event ID: evt_18JLX0CE0kcAlyNB3xSMvGKC   -   Customer:  <br/> <br/>
+I, [2016-06-07T09:27:04.525688 #6842]  INFO -- : BILLING: account.external_account.created			Event ID: evt_18J0wLHetwQt1c6UOBZif5zc   -   Customer:  <br/> <br/>
