@@ -52,7 +52,7 @@ class MessagesController < ApplicationController
       @message = Message.new(message_params)
       @message.save
       flash[:error] = "Appointment Accepted"
-    elsif params[:commit] != t("conversations.show.deny")
+    elsif params[:commit] == t("conversations.show.deny")
       message_params[:content] = "Appointment Denied"
       @message = Message.new(message_params)
       @message.save

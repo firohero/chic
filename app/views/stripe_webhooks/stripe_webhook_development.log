@@ -55,3 +55,4 @@ I, [2016-06-07T09:17:45.000672 #6842]  INFO -- : BILLING: balance.available			Ev
 I, [2016-06-07T09:23:36.678861 #6842]  INFO -- : BILLING: charge.succeeded			Event ID: evt_18J1cbCE0kcAlyNBcpIU4WNQ   -   Customer: cus_8aBu03Vf0nI43P <br/> <br/>
 I, [2016-06-07T09:24:24.379736 #6842]  INFO -- : BILLING: transfer.created			Event ID: evt_18JLX0CE0kcAlyNB3xSMvGKC   -   Customer:  <br/> <br/>
 I, [2016-06-07T09:27:04.525688 #6842]  INFO -- : BILLING: account.external_account.created			Event ID: evt_18J0wLHetwQt1c6UOBZif5zc   -   Customer:  <br/> <br/>
+I, [2016-07-02T14:36:12.389920 #12854]  INFO -- : BILLING: account.updated			Event ID: evt_00000000000000   -   Customer:  <br/> <br/>
