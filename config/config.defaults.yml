@@ -100,7 +100,7 @@ default: &default_settings
 
   # If you want to force all use to be SSL secured (https://) you can set this to true
   # Note that you can set this value separately to each enironment below (e.g. if your developing)
-  always_use_ssl: false
+  always_use_ssl: true
 
   # Sharetribe can use an Aalto Social Interface server to store userinformation
   # This version of Sharetribe no longer support ASI so keep the setting below as false
