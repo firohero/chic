@@ -45,6 +45,37 @@
 #  stripe_provider                    :string(255)
 #  stripe_uid                         :string(255)
 #  stripe_access_code                 :string(255)
+#  mon                                :boolean
+#  tue                                :boolean
+#  wed                                :boolean
+#  thu                                :boolean
+#  fri                                :boolean
+#  sat                                :boolean
+#  sun                                :boolean
+#  hour0                              :boolean
+#  hour1                              :boolean
+#  hour2                              :boolean
+#  hour3                              :boolean
+#  hour4                              :boolean
+#  hour5                              :boolean
+#  hour6                              :boolean
+#  hour7                              :boolean
+#  hour8                              :boolean
+#  hour9                              :boolean
+#  hour10                             :boolean
+#  hour11                             :boolean
+#  hour12                             :boolean
+#  hour13                             :boolean
+#  hour14                             :boolean
+#  hour15                             :boolean
+#  hour16                             :boolean
+#  hour17                             :boolean
+#  hour18                             :boolean
+#  hour19                             :boolean
+#  hour20                             :boolean
+#  hour21                             :boolean
+#  hour22                             :boolean
+#  hour23                             :boolean
 #
 # Indexes
 #

@@ -16,17 +16,20 @@ class MessagesController < ApplicationController
       return redirect_to root
     end
 
+    transaction_model = Transaction.find_by(conversation_id: params[:message][:conversation_id])
+
     if params[:commit] == t("conversations.show.accept")
       #transaction_model = Conversation.where(id: params[:message][:conversation_id]).transaction
-      transaction_model = Transaction.find_by(conversation_id: params[:message][:conversation_id])
+      #transaction_model = Transaction.find_by(conversation_id: params[:message][:conversation_id])
       transaction_model.appointment_status = "accepted"
       transaction_model.save
       ch = Stripe::Charge.retrieve(transaction_model.stripe_charge)
       ch.capture
     elsif params[:commit] == t("conversations.show.deny")
-      transaction_model = Transaction.find_by(conversation_id: params[:message][:conversation_id])
+      #transaction_model = Transaction.find_by(conversation_id: params[:message][:conversation_id])
       transaction_model.appointment_status = "denied"
       transaction_model.save
+      transaction_model.booking.delete
     end
 
       # temp test
@@ -39,26 +42,37 @@ class MessagesController < ApplicationController
 
     message_params = params.require(:message).permit(
       :conversation_id,
-      :content
+      :content,
+      :datetimepicker
     ).merge(
       sender_id: @current_user.id
-    )
+    ).except(:datetimepicker)
+
+    if params[:commit] == "Propose"
+      transaction_model.booking.start_at = DateTime.strptime(params[:message][:datetimepicker], "%m/%d/%Y %k:%M")
+      transaction_model.booking.end_at = DateTime.strptime(params[:message][:datetimepicker], "%m/%d/%Y %k:%M").advance(:hours => 1)
+      transaction_model.booking.save
+      message_params[:content] = "Proposed new time for #{params[:message][:datetimepicker]}
+ #{message_params[:content]}"
+    end
 
     @message = Message.new(message_params)
     if @message.save
       Delayed::Job.enqueue(MessageSentJob.new(@message.id, @current_community.id))
     elsif params[:commit] == t("conversations.show.accept") 
-      message_params[:content] = "Appointment Accepted"
+      message_params[:content] = "Appointment Accepted
+ #{message_params[:content]}"
       @message = Message.new(message_params)
       @message.save
       flash[:error] = "Appointment Accepted"
     elsif params[:commit] == t("conversations.show.deny")
-      message_params[:content] = "Appointment Denied"
+      message_params[:content] = "Appointment Denied
+ #{message_params[:content]}"
       @message = Message.new(message_params)
       @message.save
       flash[:error] = "Appointment request denied"
     else
-      flash[:error] = "Proposed time or reply cannot be empty"
+     flash[:error] = "Proposed new time cannot be empty"
     end
 
     # TODO This is somewhat copy-paste

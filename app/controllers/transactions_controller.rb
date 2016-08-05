@@ -13,6 +13,7 @@ class TransactionsController < ApplicationController
   TransactionForm = EntityUtils.define_builder(
     [:listing_id, :fixnum, :to_integer, :mandatory],
     [:message, :string],
+    [:datetimepicker, :string],
     [:quantity, :fixnum, :to_integer, default: 1],
     [:start_on, transform_with: ->(v) { Maybe(v).map { |d| TransactionViewUtils.parse_booking_date(d) }.or_else(nil) } ],
     [:end_on, transform_with: ->(v) { Maybe(v).map { |d| TransactionViewUtils.parse_booking_date(d) }.or_else(nil) } ]
@@ -85,13 +86,21 @@ class TransactionsController < ApplicationController
               unit_price: listing_model.price,
               unit_tr_key: listing_model.unit_tr_key,
               listing_quantity: @quantity,
-              content: form[:message],
+              content: "Appointment requested for #{form[:datetimepicker]}
+#{form[:message]}",
               booking_fields: booking_fields,
               payment_gateway: process[:process] == :none ? :none : gateway, # TODO This is a bit awkward
               payment_process: process[:process]}
           })
       }
-    ).on_success { |(_, (listing_id, listing_model, author_model, process), _, _, tx)|
+    ).on_success { |(form, (listing_id, listing_model, author_model, process), _, _, tx)|
+
+      if Transaction.find(tx[:transaction][:id]).booking
+        Transaction.find(tx[:transaction][:id]).booking.start_at = DateTime.strptime(form[:datetimepicker], "%m/%d/%Y %k:%M")
+        Transaction.find(tx[:transaction][:id]).booking.end_at = DateTime.strptime(form[:datetimepicker], "%m/%d/%Y %k:%M").advance(:hours => 1)
+      else
+        Transaction.find(tx[:transaction][:id]).create_booking(start_at: DateTime.strptime(form[:datetimepicker], "%m/%d/%Y %k:%M"), end_at: DateTime.strptime(form[:datetimepicker], "%m/%d/%Y %k:%M").advance(:hours => 1))
+      end
 
       @amount = (listing_model.price * @quantity * 100).to_i
       customer = Stripe::Customer.create(
@@ -300,8 +309,8 @@ class TransactionsController < ApplicationController
   end
 
   def validate_form(form_params, process)
-    if process[:process] == :none && form_params[:message].blank?
-      Result::Error.new("Proposed time-frame or message cannot be empty")
+    if process[:process] == :none && form_params[:datetimepicker].blank?
+      Result::Error.new("Proposed date/time cannot be empty")
     else
       Result::Success.new
     end
@@ -344,8 +353,54 @@ class TransactionsController < ApplicationController
     }
     author = {
       display_name: PersonViewUtils.person_display_name(author_model, community),
-      username: author_model.username
+      username: author_model.username,
+      id: author_model.id
     }
+
+    biz_hours = []
+    biz_hours << 0 if author_model.hour0
+    biz_hours << 1 if author_model.hour1
+    biz_hours << 2 if author_model.hour2
+    biz_hours << 3 if author_model.hour3
+    biz_hours << 4 if author_model.hour4
+    biz_hours << 5 if author_model.hour5
+    biz_hours << 6 if author_model.hour6
+    biz_hours << 7 if author_model.hour7
+    biz_hours << 8 if author_model.hour8
+    biz_hours << 9 if author_model.hour9
+    biz_hours << 10 if author_model.hour10
+    biz_hours << 11 if author_model.hour11
+    biz_hours << 12 if author_model.hour12
+    biz_hours << 13 if author_model.hour13
+    biz_hours << 14 if author_model.hour14
+    biz_hours << 15 if author_model.hour15
+    biz_hours << 16 if author_model.hour16
+    biz_hours << 17 if author_model.hour17
+    biz_hours << 18 if author_model.hour18
+    biz_hours << 19 if author_model.hour19
+    biz_hours << 20 if author_model.hour20
+    biz_hours << 21 if author_model.hour21
+    biz_hours << 22 if author_model.hour22
+    biz_hours << 23 if author_model.hour23
+
+    work_days = []
+    work_days << 1 if !author_model.mon
+    work_days << 2 if !author_model.tue
+    work_days << 3 if !author_model.wed
+    work_days << 4 if !author_model.thu
+    work_days << 5 if !author_model.fri
+    work_days << 6 if !author_model.sat
+    work_days << 0 if !author_model.sun
+
+    booked_time = Transaction.where("listing_author_id = ?", author[:id]).map { |tx| tx.booking} # output is an array of all Booking Active::Record from author of listing
+    booked_time = booked_time.map { |booking| booking ? [booking.start_at, booking.end_at] : [nil, nil]} # new output is an Array of Arrays with [start, end] of every booking of author
+    disabled_time = []
+    booked_time.each { |start_end| disabled_time << start_end if Maybe(start_end)[1].or_else(nil) != nil} # create new disabled_time array eliminating the nill elements of the booked_time Array
+    format = "MM/DD/YYYY H:mm"
+    disabled_time = disabled_time.map do |time_frame|
+      "[moment(\"#{(time_frame[0] - 60.minutes).to_s(:datetime)}\", \"#{format}\"), moment(\"#{time_frame[1].to_s(:datetime)}\", \"#{format}\")]"
+    end
+    disabled_time = disabled_time.join(", ")
 
     unit_type = listing_model.unit_type.present? ? ListingViewUtils.translate_unit(listing_model.unit_type, listing_model.unit_tr_key) : nil
     localized_selector_label = listing_model.unit_type.present? ? ListingViewUtils.translate_quantity(listing_model.unit_type, listing_model.unit_selector_tr_key) : nil
@@ -377,6 +432,9 @@ class TransactionsController < ApplicationController
     render "transactions/new", locals: {
              listing: listing,
              author: author,
+             work_days: work_days,
+             biz_hours: biz_hours,
+             disabled_time: disabled_time,
              action_button_label: t(listing_model.action_button_tr_key),
              m_price_break_down: m_price_break_down,
              booking_start: booking_start,

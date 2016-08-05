@@ -5,17 +5,28 @@
   -# content_for :javascript do
     initialize_reply_form('#{I18n.locale}');
 
+  - transaction_not_present ||= false
+
   #reply_form.message-avatar-padding.message-reply-form
     = form_for message_form, :url => message_form_action do |f|
-      - if transaction_model.appointment_status == nil && @current_user.id != transaction_model.starter_id && transaction_model.stripe_charge != nil
-        = f.button t("conversations.show.accept"), :name=>"commit", :value=>"Accept", :class => "inner btn-accept"
-      - if transaction_model.stripe_charge != nil
-        = f.button t("conversations.show.propose_new_time"), :class => "inner btn-propose"
-      - if transaction_model.appointment_status == nil && @current_user.id != transaction_model.starter_id && transaction_model.stripe_charge != nil
-        = f.button t("conversations.show.deny"), :name=>"commit", :value=>"Deny", :class => "inner btn-deny"
-      = f.label :content, t("conversations.show.propose_or_write")
-      = f.text_area :content, :class => "reply_form_text_area"
-      = f.hidden_field :conversation_id
-      - if transaction_model.appointment_status != nil || transaction_model.stripe_charge == nil
+      - if !transaction_not_present
+        - if transaction_model.appointment_status == nil && @current_user.id != transaction_model.starter_id && transaction_model.stripe_charge != nil
+          = f.button t("conversations.show.accept"), :name=>"commit", :value=>"Accept", :class => "inner btn-accept"
+        - if transaction_model.appointment_status == nil && @current_user.id != transaction_model.starter_id && transaction_model.stripe_charge != nil
+          = f.button t("conversations.show.deny"), :name=>"commit", :value=>"Deny", :class => "inner btn-deny"
+        = f.label :content, t("conversations.show.propose_or_write")
+        = f.text_area :content, :class => "reply_form_text_area"
+        - if transaction_model.stripe_charge != nil
+          = f.button "Send message", :class => "inner btn-propose"
+          %br
+          - if transaction_model.appointment_status != "accepted" && transaction_model.appointment_status != "denied"
+            = f.button t("conversations.show.propose_new_time"), :name=>"commit", :value=>"Propose", :class => "inner btn-propose"
+            = f.text_field :datetimepicker, :class => "datetimepicker", :id => "datetimepicker"
+        = f.hidden_field :conversation_id
+        -# if transaction_model.appointment_status != nil || transaction_model.stripe_charge == nil
+          -#= f.button t("conversations.show.send_reply")
+      - else 
+        = f.label :content, t("conversations.show.propose_or_write")
+        = f.text_area :content, :class => "reply_form_text_area"
+        = f.hidden_field :conversation_id
         = f.button t("conversations.show.send_reply")
-

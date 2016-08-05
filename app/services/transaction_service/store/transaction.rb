@@ -164,7 +164,7 @@ module TransactionService::Store::Transaction
   end
 
   def add_opt_booking(hash, m)
-    if m.booking
+    if m.booking && m.booking.start_on
       booking_data = EntityUtils.model_to_hash(m.booking)
       hash.merge(booking: Booking.call(
                   booking_data.merge(duration: booking_duration(booking_data))))

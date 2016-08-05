@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160627013400) do
+ActiveRecord::Schema.define(version: 20160729230731) do
 
   create_table "auth_tokens", force: :cascade do |t|
     t.string   "token",            limit: 255
@@ -41,6 +41,8 @@ ActiveRecord::Schema.define(version: 20160627013400) do
     t.date     "end_on"
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
+    t.datetime "start_at"
+    t.datetime "end_at"
   end
 
   add_index "bookings", ["transaction_id"], name: "index_bookings_on_transaction_id", using: :btree
@@ -895,6 +897,37 @@ ActiveRecord::Schema.define(version: 20160627013400) do
     t.string   "stripe_provider",                    limit: 255
     t.string   "stripe_uid",                         limit: 255
     t.string   "stripe_access_code",                 limit: 255
+    t.boolean  "mon"
+    t.boolean  "tue"
+    t.boolean  "wed"
+    t.boolean  "thu"
+    t.boolean  "fri"
+    t.boolean  "sat"
+    t.boolean  "sun"
+    t.boolean  "hour0"
+    t.boolean  "hour1"
+    t.boolean  "hour2"
+    t.boolean  "hour3"
+    t.boolean  "hour4"
+    t.boolean  "hour5"
+    t.boolean  "hour6"
+    t.boolean  "hour7"
+    t.boolean  "hour8"
+    t.boolean  "hour9"
+    t.boolean  "hour10"
+    t.boolean  "hour11"
+    t.boolean  "hour12"
+    t.boolean  "hour13"
+    t.boolean  "hour14"
+    t.boolean  "hour15"
+    t.boolean  "hour16"
+    t.boolean  "hour17"
+    t.boolean  "hour18"
+    t.boolean  "hour19"
+    t.boolean  "hour20"
+    t.boolean  "hour21"
+    t.boolean  "hour22"
+    t.boolean  "hour23"
   end
 
   add_index "people", ["authentication_token"], name: "index_people_on_authentication_token", using: :btree

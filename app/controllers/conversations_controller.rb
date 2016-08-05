@@ -41,7 +41,8 @@ class ConversationsController < ApplicationController
       messages: messages.reverse,
       conversation_data: conversation,
       message_form: message_form,
-      message_form_action: person_message_messages_path(@current_user, :message_id => conversation[:id])
+      message_form_action: person_message_messages_path(@current_user, :message_id => conversation[:id]),
+      transaction_not_present: !transaction.present?
     }
   end
 

@@ -1,3 +1,17 @@
+- content_for :extra_javascript do
+  :javascript
+    $(function () {
+      $('#datetimepicker').datetimepicker({
+        minDate: moment(),
+        sideBySide: true,
+        inline: true,
+        format: "MM/DD/YYYY H:mm",
+        stepping: 15,
+        debug: true
+      });
+    });
+
+
 = render :partial => "transactions/conversation_header", locals: {other_party: conversation_other_party}
 
 .centered-section-wide

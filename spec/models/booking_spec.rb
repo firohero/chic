@@ -8,6 +8,8 @@
 #  end_on         :date
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  start_at       :datetime
+#  end_at         :datetime
 #
 # Indexes
 #

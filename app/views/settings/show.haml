@@ -55,6 +55,110 @@
     -# About text
     = form.label :description, t("settings.profile.about_you"), :class => "input"
     = form.text_area :description, :class => "update_profile_description_text_area"
+
+    -# Business Hours
+    %br
+    %strong Business hours:
+    = form.label :hour0, class: "checkbox-row-checkbox" do
+      = form.check_box :hour0
+      %span 12am --
+    = form.label :hour1, class: "checkbox-row-checkbox" do
+      = form.check_box :hour1
+      %span 1am -- 
+    = form.label :hour2, class: "checkbox-row-checkbox" do
+      = form.check_box :hour2
+      %span 2am --
+    = form.label :hour3, class: "checkbox-row-checkbox" do
+      = form.check_box :hour3
+      %span 3am --
+    = form.label :hour4, class: "checkbox-row-checkbox" do
+      = form.check_box :hour4
+      %span 4am --
+    = form.label :hour5, class: "checkbox-row-checkbox" do
+      = form.check_box :hour5
+      %span 5am --
+    = form.label :hour6, class: "checkbox-row-checkbox" do
+      = form.check_box :hour6
+      %span 6am --
+    = form.label :hour7, class: "checkbox-row-checkbox" do
+      = form.check_box :hour7
+      %span 7am --
+    = form.label :hour8, class: "checkbox-row-checkbox" do
+      = form.check_box :hour8
+      %span 8am --
+    = form.label :hour9, class: "checkbox-row-checkbox" do
+      = form.check_box :hour9
+      %span 9am --
+    = form.label :hour10, class: "checkbox-row-checkbox" do
+      = form.check_box :hour10
+      %span 10am --
+    = form.label :hour11, class: "checkbox-row-checkbox" do
+      = form.check_box :hour11
+      %span 11am --
+    = form.label :hour12, class: "checkbox-row-checkbox" do
+      = form.check_box :hour12
+      %span 12pm --
+    = form.label :hour13, class: "checkbox-row-checkbox" do
+      = form.check_box :hour13
+      %span 1pm --
+    = form.label :hour14, class: "checkbox-row-checkbox" do
+      = form.check_box :hour14
+      %span 2pm --
+    = form.label :hour15, class: "checkbox-row-checkbox" do
+      = form.check_box :hour15
+      %span 3pm --
+    = form.label :hour16, class: "checkbox-row-checkbox" do
+      = form.check_box :hour16
+      %span 4pm --
+    = form.label :hour17, class: "checkbox-row-checkbox" do
+      = form.check_box :hour17
+      %span 5pm --
+    = form.label :hour18, class: "checkbox-row-checkbox" do
+      = form.check_box :hour18
+      %span 6pm --
+    = form.label :hour19, class: "checkbox-row-checkbox" do
+      = form.check_box :hour19
+      %span 7pm --
+    = form.label :hour20, class: "checkbox-row-checkbox" do
+      = form.check_box :hour20
+      %span 8pm --
+    = form.label :hour21, class: "checkbox-row-checkbox" do
+      = form.check_box :hour21
+      %span 9pm --
+    = form.label :hour22, class: "checkbox-row-checkbox" do
+      = form.check_box :hour22
+      %span 10pm --
+    = form.label :hour23, class: "checkbox-row-checkbox" do
+      = form.check_box :hour23
+      %span 11pm
+
+    %br
+    %br
+    %strong Working days:
+    = form.label :mon, class: "checkbox-row-checkbox" do
+      = form.check_box :mon
+      %span Monday -
+    = form.label :tue, class: "checkbox-row-checkbox" do
+      = form.check_box :tue
+      %span Tuesday -
+    = form.label :wed, class: "checkbox-row-checkbox" do
+      = form.check_box :wed
+      %span Wednesday -
+    = form.label :thu, class: "checkbox-row-checkbox" do
+      = form.check_box :thu
+      %span Thursday -
+    = form.label :fri, class: "checkbox-row-checkbox" do
+      = form.check_box :fri
+      %span Friday -
+    = form.label :sat, class: "checkbox-row-checkbox" do
+      = form.check_box :sat
+      %span Saturday -
+    = form.label :sun, class: "checkbox-row-checkbox" do
+      = form.check_box :sun
+      %span Sunday
+    %br
+    %br
+
     = form.fields_for :location do |loc|
       = loc.hidden_field :address, :value => @person.location.address
       = loc.hidden_field :google_address, :value => @person.location.google_address
