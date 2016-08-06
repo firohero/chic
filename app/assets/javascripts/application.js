@@ -27,7 +27,7 @@
 
 //= require moment.js
 //= require bootstrap-datetimepicker.js
-//= require bootstrap-datetimepicker.min
+// require bootstrap-datetimepicker.min
 
 // Allow IE8-9 to post cross domain XHR (required for image upload)
 //= require jquery.iframe-transport.js
