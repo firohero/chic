@@ -3,8 +3,8 @@
     ST.transaction.initializeFreeTransactionForm("#{I18n.locale}");
   %script{type: "text/javascript", src: "https://js.stripe.com/v2/"}
   %script{type: "text/javascript", src: "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.1/moment.js"}
-  %script{type: "text/javascript", src: "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.css"}
   %script{type: "text/javascript", src: "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"}
+  %link{rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.css"}
   :javascript
     Stripe.setPublishableKey("#{@stripe_public}");
   :javascript
