@@ -85,8 +85,7 @@ gem 'jwt', '~> 1.5.2'
 
 # This gem packages the bootstrap-datetimepicker: http://eonasdan.github.io/bootstrap-datetimepicker/
 gem 'bootstrap-sass', '~> 3.2.0'
-#gem 'momentjs-rails', '>= 2.9.0'
-gem 'momentjs-rails', '= 2.10.6'
+gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 4.17.37'
 
 # Stripe API library
