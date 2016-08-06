@@ -3,10 +3,10 @@
     ST.transaction.initializeFreeTransactionForm("#{I18n.locale}");
   %script{type: "text/javascript", src: "https://js.stripe.com/v2/"}
   -#%script{type: "text/javascript", src: "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"}
-  %script{type: "text/javascript", src: "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"}
-  %script{type: "text/javascript", src: "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.1/moment.js"}
+  -#%script{type: "text/javascript", src: "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"}
+  -#%script{type: "text/javascript", src: "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.1/moment.js"}
   -#%link{rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.css"}
-  %script{type: "text/javascript", src: "/assets/bootstrap-datetimepicker.min-3a7ed7b37c652a2499e64a58961bc408.js"}
+  -#%script{type: "text/javascript", src: "/assets/bootstrap-datetimepicker.min-3a7ed7b37c652a2499e64a58961bc408.js"}
   -#%script{type: "text/javascript", src: "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"}
   :javascript
     Stripe.setPublishableKey("#{@stripe_public}");
