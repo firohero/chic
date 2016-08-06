@@ -25,9 +25,8 @@
 //= require selectize-standalone.js
 //= require datepicker/bootstrap-datepicker.js
 
-//= require bootstrap-datetimepicker
-//= require moment
-// require bootstrap-datetimepicker
+//= require moment.js
+//= require bootstrap-datetimepicker.js
 
 // Allow IE8-9 to post cross domain XHR (required for image upload)
 //= require jquery.iframe-transport.js
