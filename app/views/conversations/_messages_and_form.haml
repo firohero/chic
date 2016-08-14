@@ -30,3 +30,9 @@
         = f.text_area :content, :class => "reply_form_text_area"
         = f.hidden_field :conversation_id
         = f.button t("conversations.show.send_reply")
+  - if transaction_model.appointment_status != "accepted" && transaction_model.appointment_status != "denied"
+    .row
+      %h2.people-header
+        = "Verify availability below before proposing new date/time" 
+      = "Business Hours highlighted in light grey below" 
+      #calendar 

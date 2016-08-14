@@ -102,35 +102,57 @@ class TransactionsController < ApplicationController
         Transaction.find(tx[:transaction][:id]).create_booking(start_at: DateTime.strptime(form[:datetimepicker], "%m/%d/%Y %k:%M"), end_at: DateTime.strptime(form[:datetimepicker], "%m/%d/%Y %k:%M").advance(:hours => 1))
       end
 
-      @amount = (listing_model.price * @quantity * 100).to_i
-      customer = Stripe::Customer.create(
-        :email => params[:stripeEmail],
-        :source  => params[:stripeToken]
-      )
+      begin
+        @amount = (listing_model.price * @quantity * 100).to_i
+        customer = Stripe::Customer.create(
+          :email => params[:stripeEmail],
+          :source  => params[:stripeToken]
+        )
 
-      charge = Stripe::Charge.create(
-        :customer    => customer.id,
-        :amount      => @amount.to_s,
-        :description => "User #{@current_user.username} bought from listing ID: #{listing_id}",
-        :currency    => 'cad',
-        :capture     => false,
-        :destination => "#{author_model.stripe_uid}"
-      )
-      tx_update = Transaction.find(tx[:transaction][:id])
-      tx_update.stripe_charge = charge.id
-      tx_update.save
+        charge = Stripe::Charge.create(
+          :customer    => customer.id,
+          :amount      => @amount.to_s,
+          :description => "User #{@current_user.username} bought from listing ID: #{listing_id}",
+          :currency    => 'cad',
+          :capture     => false,
+          :destination => "#{author_model.stripe_uid}"
+        )
+        tx_update = Transaction.find(tx[:transaction][:id])
+        tx_update.stripe_charge = charge.id
+        tx_update.save
 
-      after_create_actions!(process: process, transaction: tx[:transaction], community_id: @current_community.id)
-      flash[:notice] = after_create_flash(process: process) # add more params here when needed
-      redirect_to after_create_redirect(process: process, starter_id: @current_user.id, transaction: tx[:transaction]) # add more params here when needed
+        after_create_actions!(process: process, transaction: tx[:transaction], community_id: @current_community.id)
+        flash[:notice] = after_create_flash(process: process) # add more params here when needed
+        redirect_to after_create_redirect(process: process, starter_id: @current_user.id, transaction: tx[:transaction]) # add more params here when needed
+
+      rescue Stripe::CardError => e
+        flash[:error] = e.message
+        redirect_to(session[:return_to_content] || root)
+      rescue Stripe::RateLimitError => e
+        flash[:error] = e.message
+        redirect_to(session[:return_to_content] || root)
+      rescue Stripe::InvalidRequestError => e
+        flash[:error] = "Unfortunately, #{author_model.given_name} still hasn't set up his/her payment preferences in our system. Please, contact #{author_model.given_name} and let him/her know about this issue."
+        redirect_to(session[:return_to_content] || root)
+      rescue Stripe::AuthenticationError => e
+        flash[:error] = e.message
+        redirect_to(session[:return_to_content] || root)
+      rescue Stripe::APIConnectionError => e
+        flash[:error] = e.message
+        redirect_to(session[:return_to_content] || root)
+      rescue Stripe::StripeError => e
+        flash[:error] = e.message
+        redirect_to(session[:return_to_content] || root)
+      rescue => e
+        flash[:error] = e.message
+        redirect_to(session[:return_to_content] || root)
+      end
+
     }.on_error { |error_msg, data|
       flash[:error] = Maybe(data)[:error_tr_key].map { |tr_key| t(tr_key) }.or_else("Could not start a transaction, error message: #{error_msg}")
       redirect_to(session[:return_to_content] || root)
     }
 
-  rescue Stripe::CardError => e
-    flash[:error] = e.message
-    redirect_to(session[:return_to_content] || root)
   end
 
   def show
@@ -180,9 +202,84 @@ class TransactionsController < ApplicationController
         listing.author_id == @current_user.id
       end
 
+    events = []
+    txs = []
+    all_txs = Transaction.where("listing_author_id = ? OR starter_id = ?", listing.author.id, listing.author.id)
+    all_txs.each do |t|
+      if t.booking && t.appointment_status == "accepted"
+        txs << t if t.booking.end_at # remove instances where start_at/end_at is/are nil
+      end
+    end
+    events = txs.map do |tx|
+      event = {}
+      event[:title] = Person.find(tx.starter_id).given_name
+      event[:start] = tx.booking.start_at.strftime("%Y-%m-%dT%H:%M:%S") #covert to right format: '2016-08-08T11:30:00'
+      event[:end] = tx.booking.end_at.strftime("%Y-%m-%dT%H:%M:%S")
+      event[:url] = person_transaction_url(person_id: listing.author.id, id: tx.id)
+      event
+    end
+    # Creating a string of the array of hash's in JSON style hash symbol key because Ruby coverts symbol key of hash from k: to :k => and the latter is not recognized by JavaScript
+    event_str = "["
+    events.each do |e|
+      event_str << "{"
+      e.each do |k,v|
+        event_str << k.to_s
+        event_str << ": "
+        event_str << "\""
+        event_str << v
+        event_str << "\""
+        event_str << ", "
+      end
+      event_str = event_str[0...-2]
+      event_str << "}"
+      event_str << ", "
+    end
+    event_str = event_str[0...-2]
+    event_str << "]"
+    event_str != "]" ? events = event_str : events = "[]"
+
+    dow = []
+    dow << 1 if listing.author.mon
+    dow << 2 if listing.author.tue
+    dow << 3 if listing.author.wed
+    dow << 4 if listing.author.thu
+    dow << 5 if listing.author.fri
+    dow << 6 if listing.author.sat
+    dow << 0 if listing.author.sun
+
+    start_time = nil
+    n = 0
+    while !start_time && n < 24 do
+      if listing.author.send("hour#{n.to_s}")
+        if n < 10
+          start_time = "0#{n.to_s}:00"
+        else
+          start_time = "#{n.to_s}:00"
+        end
+      end
+      n +=1
+    end
+
+    end_time = nil
+    n = 23
+    while !end_time && n >= 0 do
+      if listing.author.send("hour#{n.to_s}")
+        if n < 10
+          end_time = "0#{n.to_s}:00"
+        else
+          end_time = "#{n.to_s}:00"
+        end
+      end
+      n -=1
+    end
+
     render "transactions/show", locals: {
       messages: messages_and_actions.reverse,
       transaction: tx,
+      events: events,
+      dow: dow,
+      start_time: start_time,
+      end_time: end_time,
       listing: listing,
       transaction_model: tx_model,
       conversation_other_party: person_entity_with_url(conversation[:other_person]),

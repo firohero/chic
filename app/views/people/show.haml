@@ -1,3 +1,5 @@
+%link{rel: "stylesheet", href: "//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.1/fullcalendar.min.css"}
+
 - content_for :javascript do
   initialize_profile_view("#{@person.username}");
 
@@ -51,6 +53,12 @@
       - limit = 6
       = render :partial => 'listings/profile_listings', :locals => {person: @person, limit: limit, listings: listings}
 
+    .row
+      %h2.people-header
+        = "Calendar"
+      = "Business Hours highlighted in light grey below"
+      #calendar
+
     - if @current_community.follow_in_use?
       = render :partial => "followed_people", :locals => { person: @person, followed_people: followed_people, limit: 6 }
 
@@ -79,3 +87,30 @@
 - content_for :extra_javascript do
   :javascript
     window.ST.initializeFollowButtons();
+  = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.1/fullcalendar.min.js"
+  :javascript
+    $(document).ready(function() {
+      // page is now ready, initialize the calendar...
+      $('#calendar').fullCalendar({
+        // put your options and callbacks here
+        header: {
+          left: 'today prev,next',
+          center: 'title',
+          right: 'month,agendaWeek,agendaDay'
+        },
+        defaultView: 'agendaWeek',
+        allDaySlot: false,
+        backgroundColor: 'blue',
+        eventColor: 'pink',
+        eventTextColor: 'grey',
+        events: #{events},
+        businessHours: {
+          // days of week. an array of zero-based day of week integers (0=Sunday)
+          dow: #{dow},
+          start: '#{start_time}', // a start time (10am in this example)
+          end: '#{end_time}', // an end time (6pm in this example)
+          color: 'black'
+        }
+      })
+    });
+

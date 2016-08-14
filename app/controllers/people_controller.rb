@@ -57,12 +57,87 @@ class PeopleController < Devise::RegistrationsController
       ))
     }.data
 
+    events = []
+    txs = []
+    all_txs = Transaction.where("listing_author_id = ? OR starter_id = ?", @person.id, @person.id)
+    all_txs.each do |t|
+      if t.booking && t.appointment_status == "accepted"
+        txs << t if t.booking.end_at # remove instances where start_at/end_at is/are nil
+      end
+    end
+    events = txs.map do |tx|
+      event = {}
+      event[:title] = Person.find(tx.starter_id).given_name
+      event[:start] = tx.booking.start_at.strftime("%Y-%m-%dT%H:%M:%S") #covert to right format: '2016-08-08T11:30:00'
+      event[:end] = tx.booking.end_at.strftime("%Y-%m-%dT%H:%M:%S")
+      event[:url] = person_transaction_url(person_id: @person.id, id: tx.id)
+      event
+    end
+    # Creating a string of the array of hash's in JSON style hash symbol key because Ruby coverts symbol key of hash from k: to :k => and the latter is not recognized by JavaScript
+    event_str = "["
+    events.each do |e|
+      event_str << "{"
+      e.each do |k,v|
+        event_str << k.to_s
+        event_str << ": "
+        event_str << "\""
+        event_str << v
+        event_str << "\""
+        event_str << ", "
+      end
+      event_str = event_str[0...-2]
+      event_str << "}"
+      event_str << ", "
+    end
+    event_str = event_str[0...-2]
+    event_str << "]"
+    event_str != "]" ? events = event_str : events = "[]"
+
+    dow = []
+    dow << 1 if @person.mon
+    dow << 2 if @person.tue
+    dow << 3 if @person.wed
+    dow << 4 if @person.thu
+    dow << 5 if @person.fri
+    dow << 6 if @person.sat
+    dow << 0 if @person.sun
+
+    start_time = nil
+    n = 0
+    while !start_time && n < 24 do
+      if @person.send("hour#{n.to_s}")
+        if n < 10
+          start_time = "0#{n.to_s}:00"
+        else
+          start_time = "#{n.to_s}:00"
+        end
+      end
+      n +=1
+    end
+
+    end_time = nil
+    n = 23
+    while !end_time && n >= 0 do
+      if @person.send("hour#{n.to_s}")
+        if n < 10
+          end_time = "0#{n.to_s}:00"
+        else
+          end_time = "#{n.to_s}:00"
+        end
+      end
+      n -=1
+    end
+
     followed_people = followed_people_in_community(@person, @current_community)
     received_testimonials = TestimonialViewUtils.received_testimonials_in_community(@person, @current_community)
     received_positive_testimonials = TestimonialViewUtils.received_positive_testimonials_in_community(@person, @current_community)
     feedback_positive_percentage = @person.feedback_positive_percentage_in_community(@current_community)
 
     render locals: { listings: listings,
+                     events: events,
+                     dow: dow,
+                     start_time: start_time,
+                     end_time: end_time,
                      followed_people: followed_people,
                      received_testimonials: received_testimonials,
                      received_positive_testimonials: received_positive_testimonials,

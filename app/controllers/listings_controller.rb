@@ -186,8 +186,83 @@ class ListingsController < ApplicationController
     received_positive_testimonials = TestimonialViewUtils.received_positive_testimonials_in_community(@listing.author, @current_community)
     feedback_positive_percentage = @listing.author.feedback_positive_percentage_in_community(@current_community)
 
+    events = []
+    txs = []
+    all_txs = Transaction.where("listing_author_id = ? OR starter_id = ?", @listing.author.id, @listing.author.id)
+    all_txs.each do |t| 
+      if t.booking && t.appointment_status == "accepted"
+        txs << t if t.booking.end_at # remove instances where start_at/end_at is/are nil
+      end
+    end
+    events = txs.map do |tx| 
+      event = {}
+      event[:title] = Person.find(tx.starter_id).given_name
+      event[:start] = tx.booking.start_at.strftime("%Y-%m-%dT%H:%M:%S") #covert to right format: '2016-08-08T11:30:00'
+      event[:end] = tx.booking.end_at.strftime("%Y-%m-%dT%H:%M:%S")
+      event[:url] = person_transaction_url(person_id: @listing.author.id, id: tx.id)
+      event
+    end    
+    # Creating a string of the array of hash's in JSON style hash symbol key because Ruby coverts symbol key of hash from k: to :k => and the latter is not recognized by JavaScript 
+    event_str = "["
+    events.each do |e|
+      event_str << "{"
+      e.each do |k,v|
+        event_str << k.to_s
+        event_str << ": "
+        event_str << "\""
+        event_str << v
+        event_str << "\""
+        event_str << ", "
+      end
+      event_str = event_str[0...-2]
+      event_str << "}"
+      event_str << ", "
+    end
+    event_str = event_str[0...-2]
+    event_str << "]"
+    event_str != "]" ? events = event_str : events = "[]"
+
+    dow = []
+    dow << 1 if @listing.author.mon
+    dow << 2 if @listing.author.tue
+    dow << 3 if @listing.author.wed
+    dow << 4 if @listing.author.thu
+    dow << 5 if @listing.author.fri
+    dow << 6 if @listing.author.sat
+    dow << 0 if @listing.author.sun
+
+    start_time = nil
+    n = 0
+    while !start_time && n < 24 do
+      if @listing.author.send("hour#{n.to_s}")  
+        if n < 10
+          start_time = "0#{n.to_s}:00"
+        else
+          start_time = "#{n.to_s}:00"
+        end
+      end
+      n +=1
+    end
+
+    end_time = nil
+    n = 23
+    while !end_time && n >= 0 do
+      if @listing.author.send("hour#{n.to_s}")
+        if n < 10
+          end_time = "0#{n.to_s}:00"
+        else
+          end_time = "#{n.to_s}:00"
+        end
+      end
+      n -=1
+    end
+
     render locals: {
              form_path: form_path,
+             events: events,
+             dow: dow,
+             start_time: start_time,
+             end_time: end_time,
              payment_gateway: payment_gateway,
              # TODO I guess we should not need to know the process in order to show the listing
              process: process,
