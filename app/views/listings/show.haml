@@ -1,4 +1,7 @@
 %link{rel: "stylesheet", href: "//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.9.1/fullcalendar.min.css"}
+:css
+  .fc-nonbusiness{background:#999999}
+  .fc-today{background:#000099}
 
 - content_for :javascript do
   initialize_listing_view('#{I18n.locale}');
